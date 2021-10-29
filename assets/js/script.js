@@ -57,6 +57,11 @@ $(".list-group").on("click","p",function(){
   $(this).replaceWith(textInput);
   textInput.trigger("focus");
 });
+
+var auditTask = function(){
+  //to ensure element is getting to the function
+  console.log(taskEl);
+}
 $(".list-group").on("blur","textarea",function(){
   //get the textarea's current value/text 
   var text = $(this)
@@ -92,13 +97,20 @@ $(".list-group").on("click","span", function(){
   .val(date);
   //swap out elements
   $(this).replaceWith(dateInput);
-
+  //enable jQuery ui datepicker
+  dateInput.datepicker({
+    minDate:0,
+    onClose: function(){
+      //when calendar is closed, force a change event on the "dateInput"
+      $(this).trigger("change");
+    }
+  });
   //automatically focus on new element
   dateInput.trigger("focus");
 });
 
 // value of due date was changed
-$(".list-group").on("blur","input[type='text']",function(){
+$(".list-group").on("change","input[type='text']",function(){
   //get current text
   var date=$(this)
   .val()
@@ -173,6 +185,10 @@ $(".card .list-group").sortable({
     saveTasks();
     console.log(tempArr);
   }
+});
+
+$("#modalDueDate").datepicker({
+  minDate:1
 });
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
